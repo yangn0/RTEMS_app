@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "~/devel/rtems-aarch64-utk/src/rtems/**",
+                "~/devel/rtems-aarch64-utk/rtems/6/**"
+            ],
+            "defines": [],
+            "compilerPath": "/home/yangn0/devel/rtems-aarch64-utk/rtems/6/bin/aarch64-rtems6-gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

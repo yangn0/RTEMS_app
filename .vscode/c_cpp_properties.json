@@ -2,12 +2,18 @@
     "configurations": [
         {
             "name": "Linux",
-            "includePath": [
-                "~/devel/rtems-aarch64-utk/src/rtems/**",
-                "~/devel/rtems-aarch64-utk/rtems/6/**"
+            "includePath": [       
+                "~/btstack/**",
+                "~/RTEMS_devel/rtems/6/**",
+                "~/RTEMS_devel/src/rtems/**",
+                "~/RTEMS_devel/src/rtems/bsps/**",
+                "~/RTEMS_devel/src/rtems-source-builder/**",
+                "~/RTEMS_devel/src/rtems-libbsd/**",
+                "~/RTEMS_devel/src/rtems/bsps/aarch64/raspberrypi/**",
+                "~/RTEMS_devel/src/rtems/bsps/aarch64/raspberrypi/include/**",
             ],
             "defines": [],
-            "compilerPath": "/home/yangn0/devel/rtems-aarch64-utk/rtems/6/bin/aarch64-rtems6-gcc",
+            "compilerPath": "~/RTEMS_devel/rtems/6/bin/aarch64-rtems6-gcc",
             "cStandard": "c17",
             "cppStandard": "gnu++17",
             "intelliSenseMode": "linux-gcc-x64"

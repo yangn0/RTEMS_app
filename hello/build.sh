@@ -10,3 +10,6 @@ rm /home/yangn0/devel/rtems-aarch64/app/hello/hello.img
 ./waf 
 
 aarch64-rtems6-objcopy -O binary /home/yangn0/devel/rtems-aarch64/app/hello/build/aarch64-rtems6-$bsp/hello.exe hello.img
+
+app=hello.exe
+qemu-system-aarch64.exe -no-reboot -nographic -serial mon:stdio -machine virt,gic-version=3 -cpu cortex-a72 -m 4096 -d trace:pl011_baudrate_change -kernel $app

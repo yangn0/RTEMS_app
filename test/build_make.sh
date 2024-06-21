@@ -16,3 +16,5 @@ mv $HOME/devel/app/test/o-optimize/test.exe $HOME/devel/app/test/
 rm -rf $HOME/devel/app/test/o-optimize/
 
 aarch64-rtems6-objcopy -O binary $HOME/devel/app/test/test.exe kernel8.img
+
+cp kernel8.img /mnt/c/Users/79230/Desktop/tftp/

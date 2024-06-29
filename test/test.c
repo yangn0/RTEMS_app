@@ -44,6 +44,26 @@ int SPI_Write(uint8_t *TxBuf, int len)
     return ret;
 }
 
+int SPI_Transfer(const uint8_t *TxBuf, uint8_t *RxBuf, int len)
+{
+    int ret;
+    int fd = g_SPI_Fd;
+
+    struct spi_ioc_transfer tr;
+    memset(&tr, 0x00, sizeof(tr));
+    tr.tx_buf = TxBuf;
+    tr.rx_buf = RxBuf;
+    tr.len = len;
+    tr.speed_hz = speed;
+    tr.bits_per_word = bits;
+    tr.cs = 0;
+    ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
+    if (ret < 0) {
+        printf("%d can't send spi message", ret);
+    }
+    return 0;
+}
+
 int SPI_Open(void)
 {
     int fd;
@@ -120,7 +140,8 @@ static uint8_t SSD1306_Buffer_all[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
 void SSD1306_WriteCommand(uint8_t command)
 {
     SSD1306_DC_LOW;
-    SPI_Write(&command, 1);
+    // SPI_Write(&command, 1);
+    SPI_Transfer(&command, NULL, 1);
 }
 
 void SSD1306_Fill(uint8_t color)
@@ -136,41 +157,22 @@ void SPI_Write_Buf(uint8_t SSD1306_Buffer_all[], int n)
     }
 }
 
-int SPI_Transfer(const uint8_t *TxBuf, uint8_t *RxBuf, int len)
-{
-    int ret;
-    int fd = g_SPI_Fd;
 
-    struct spi_ioc_transfer tr;
-    memset(&tr, 0x00, sizeof(tr));
-    tr.tx_buf = TxBuf;
-    tr.rx_buf = RxBuf;
-    tr.len = len;
-    tr.delay_usecs = 500;
-    tr.speed_hz = speed;
-    tr.bits_per_word = bits;
-    tr.cs = 0;
-    ret = ioctl(fd, SPI_IOC_MESSAGE(1), &tr);
-    if (ret < 0) {
-        printf("%d can't send spi message", ret);
-    }
-    return 0;
-}
 
 void SSD1306_UpdateScreen(void)
 {
-    char read_data[SSD1306_WIDTH * SSD1306_HEIGHT / 8];
     SSD1306_DC_HIGH;
     // SPI_Write_Buf(SSD1306_Buffer_all, SSD1306_WIDTH * SSD1306_HEIGHT / 8);
-    SPI_Transfer(SSD1306_Buffer_all, read_data, SSD1306_WIDTH * SSD1306_HEIGHT / 8);
+    SPI_Transfer(SSD1306_Buffer_all, NULL, SSD1306_WIDTH * SSD1306_HEIGHT / 8);
 }
 
-void ssd1306_init1()
+void ssd1306_init()
 {
     SSD1306_RESET_LOW;
     sleep(0.5);
     SSD1306_RESET_HIGH;
     sleep(0.5);
+
     /* Init LCD */
     SSD1306_WriteCommand(0xAE); //display off
     SSD1306_WriteCommand(0xAE); //display off
@@ -273,11 +275,6 @@ void ssd1306_init1()
      *  0xAF, Display ON in normal mode */
     SSD1306_WriteCommand(0xAF);
 
-    // /* Clear screen */
-    // SSD1306_Fill(SSD1306_COLOR_BLACK);
-
-    // /* Update screen */
-    // SSD1306_UpdateScreen();
 }
 
 void ssd1306_RTEMS_logo()
@@ -299,7 +296,7 @@ void ssd1306_RTEMS_logo()
 void worker()
 {
     SPI_Open();
-    ssd1306_init1();
+    ssd1306_init();
 
     for (int i = 0; i < 5;i++) {
         printf("%d\n", i);

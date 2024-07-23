@@ -26,7 +26,7 @@
 #include <bsp/rpi-gpio.h>
 #include <linux/spi/spidev.h>
 
-static const char *device = "/dev/spidev0";
+static const char *device = "/dev/spidev3";
 static uint32_t mode = 3;
 static uint8_t bits = 8;
 static uint32_t speed = 100 * 1000;
@@ -324,7 +324,7 @@ rtems_task Init(
     raspberrypi_gpio_set_function(SSD1306_RES_PIN, GPIO_OUTPUT);
     raspberrypi_gpio_set_function(SSD1306_DC_PIN, GPIO_OUTPUT);
 
-    int r = raspberrypi_spi_init(raspberrypi_SPI0);
+    int r = raspberrypi_spi_init(raspberrypi_SPI3);
 
     worker();
 

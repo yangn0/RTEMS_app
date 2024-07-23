@@ -10,78 +10,37 @@
 #include <rtems/error.h>
 #include <string.h>
 #include <dirent.h>
-// #include <bsp/console.h>
-// #include <bsp/aux.h>
 #include <bsp/fatal.h>
 #include <bsp/rpi-gpio.h>
 #include <bsp/raspberrypi.h>
-#include <bsp/watchdog.h>
-// #include <bsp/spi.h>
+#include <bsp/raspberrypi-spi.h>
 
 
 rtems_task Init(
     rtems_task_argument ignored)
 {
   puts("hello");
-  // sleep(1);
 
-  char s[10];
-  // char s2[100]={0};
-  
-  // printf("fcntl: %lx\n",fcntl(devfd,F_GETFL,0));
+  char s[100]="hello RTEMS";
 
-  // printf("scanf: ");
-  // scanf("%s",s);
-  // printf("printf: %s",s);
+  raspberrypi_spi_init(raspberrypi_SPI0);
 
-  // struct termios term;
-  // tcgetattr(devfd, &term);
-  // tcsetattr(devfd, TCSANOW, &term);
+  int fd = open("/dev/spidev0", O_RDWR);
+  if (fd < 0) {
+      printf("can't open device \n");
+  } else {
+    printf("SPI - Open Succeed. Start Init SPI...n\n");
+  }
+  while(1)
+  {
+    int ret = write(fd, s, 100);
+    if (ret < 0) {
+      printf("SPI Write error "); 
+    }
+    sleep(1);
+  }
 
-  // write(devfd, "\n read:", strlen("\n read:"));
-  // int nread=read(devfd,s2,10);
-  // sprintf(s2,"\n nread:%d s:%s\n",nread,s);
-  // sprintf(s2,"\n s:%c\n",s[0]);
-  // write(devfd, s2, strlen(s2));
-
-  // rtems_shell_wait_for_input(
-  //   devfd,
-  //   20,
-  //   notification,
-  //   NULL
-  // );
-
-  // write(devfd, "\n read:", strlen("\n read:"));
-  // int nread=read(devfd,s,10);
-  // sprintf(s2,"\n nread:%d s:%s\n",nread,s);
-  // write(devfd, s2, strlen(s2));
-
-  // rtems_shell_wait_for_input(
-  //   STDIN_FILENO,
-  //   20,
-  //   notification,
-  //   NULL
-  // );
-
-  // struct termios term;
-
-  // tcgetattr(STDIN_FILENO, &term);
-  // tcsetattr(STDIN_FILENO, TCSANOW, &term);
-
-  // printf("scanf: ");
-  // scanf("%s",s);
-  // printf("printf: %s\n",s);
-
-  // rtems_status_code status = gpio_set_function(15, GPIO_AF0);
-
-
-  // status = gpio_set_pull(15, GPIO_PULL_NONE);
-  // puts("123");
-  // printf("%d", 123);
-  // for (int i = 0;i<100;i++) {
-  //   printf("hello %d\n", i);
-
-  // }
+  puts("ends");
   rtems_shutdown_executive(0);
 }
 

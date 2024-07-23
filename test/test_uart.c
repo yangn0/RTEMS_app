@@ -15,7 +15,8 @@
 #include <bsp/fatal.h>
 #include <bsp/rpi-gpio.h>
 #include <bsp/raspberrypi.h>
-#include <bsp/spi.h>
+#include <bsp/watchdog.h>
+// #include <bsp/spi.h>
 
 // void write_hello(int fd)
 // {
@@ -195,7 +196,6 @@
 //     IMSC(regs_base) &= ~irq_mask;
 // }
 
-
 rtems_task Init(
     rtems_task_argument ignored)
 {
@@ -207,7 +207,7 @@ rtems_task Init(
 
   
 
-  // char s[10];
+  char s[10];
   // char s2[100]={0};
   
   // printf("fcntl: %lx\n",fcntl(devfd,F_GETFL,0));
@@ -264,26 +264,30 @@ rtems_task Init(
   //   printf("hello %d\n", i);
 
   // }
-
-  unsigned char s[100] = "hello,yangn0";
-
-  char buf[32];
-
-  int r = raspberrypi_spi_init("/dev/spi0", (uintptr_t *)BCM2711_SPI0_BASE);
-
-  DIR *dir;
-  struct dirent *ptr;
-  dir = opendir("/dev");
-  int n = 0;
-  while ((ptr = readdir(dir)) != NULL)
-  {
-    printf("d_name: %s d_type: %d \n", ptr->d_name, ptr->d_type);
-    sprintf(s, "/dev/%s", ptr->d_name);
-    puts(s);
-  }
-  closedir(dir);
-
-  puts("end");
-  // exit(0);
   rtems_shutdown_executive(0);
 }
+
+#define CONFIGURE_APPLICATION_NEEDS_CLOCK_DRIVER
+#define CONFIGURE_APPLICATION_NEEDS_CONSOLE_DRIVER
+
+#define CONFIGURE_UNLIMITED_OBJECTS
+#define CONFIGURE_UNIFIED_WORK_AREAS
+
+#define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+
+#define CONFIGURE_INIT
+
+#define CONFIGURE_FILESYSTEM_IMFS
+
+#define CONFIGURE_APPLICATION_NEEDS_LIBBLOCK
+#define CONFIGURE_MAXIMUM_TASKS 20
+#define CONFIGURE_MAXIMUM_SEMAPHORES 20
+#define CONFIGURE_MAXIMUM_MESSAGE_QUEUES 20
+#define CONFIGURE_MAXIMUM_FILE_DESCRIPTORS 20
+#define CONFIGURE_STACK_CHECKER_ENABLED
+#define CONFIGURE_RTEMS_INIT_TASKS_TABLE
+#define CONFIGURE_EXTRA_TASK_STACKS (6 * RTEMS_MINIMUM_STACK_SIZE)
+#define CONFIGURE_MALLOC_STATISTICS
+#define CONFIGURE_UNIFIED_WORK_AREAS
+
+#include <rtems/confdefs.h>

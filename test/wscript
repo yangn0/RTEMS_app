@@ -31,6 +31,5 @@ def build(bld):
     bld(features = 'c cprogram',
         target = 'test.exe',
         cflags = '-g -O0',
-        source = ['test_shell.c',
-                  'init_shell.c'
+        source = ['test_WDT.c'
                   ])

@@ -10,15 +10,19 @@ rtems_task Init(
 
   raspberrypi_watchdog_init();
 
-  raspberrypi_watchdog_reload(0, 10);
-  printf("%d\n", raspberrypi_watchdog_get_timeleft());
-  raspberrypi_watchdog_stop(0);
+  raspberrypi_watchdog_start(15999);
+  printf("%d\n", raspberrypi_watchdog_get_remaining_time());
+  raspberrypi_watchdog_stop();
   sleep(3);
-  printf("%d\n", raspberrypi_watchdog_get_timeleft());
+  printf("%d\n", raspberrypi_watchdog_get_remaining_time());
 
-  raspberrypi_watchdog_reload(0, 10);
-  sleep(3);
-  printf("%d\n", raspberrypi_watchdog_get_timeleft());
+  sleep(1);
+  raspberrypi_watchdog_reload();
+  while(1)
+  {
+    printf("%d\n", raspberrypi_watchdog_get_remaining_time());
+  }
+  
   puts("end");
 
   // raspberrypi_watchdog_system_reset();

@@ -1,0 +1,6 @@
+build
+o-optimize
+test.exe
+kernel8.img
+.lock-waf_linux_build
+.waf*

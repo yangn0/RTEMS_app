@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <bsp.h>
 #include <rtems/shell.h>
+#include <rtems/rtems-fdt-shell.h>
+#include <zconf.h>
+
 static rtems_task user_task(rtems_task_argument ignored)
 {
     printf("starting shell\n");
@@ -25,6 +28,14 @@ rtems_task Init(rtems_task_argument ignored)
     rtems_id Task_id;
     rtems_status_code status;
     int i;
+
+    // z_stream stream;
+    // int      err;
+    // err = inflateInit(&stream);
+
+    // err = z_inflateInit_(&stream);
+
+    rtems_fdt_add_shell_command();
 
     Task_name = rtems_build_name('U', 'S', 'E', 'R');
 

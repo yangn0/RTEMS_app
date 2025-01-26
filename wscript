@@ -38,8 +38,7 @@ def build(bld):
                     ],
         # libpath = '/home/yangn0/RTEMS_devel/rtems/6/aarch64-rtems6/raspberrypi4b/lib/',
         # defines      = ["Z_PREFIX","LWIP_DEBUG"],
-        # lib = ['curl','bsd','rtemstest','m','z','tftpfs', 'ftpd', 'telnetd'],
-        # lib=['rtemscpu', 'rtemsbsp', 'telnetd','bsd','rtemstest','ftpd','m','z'],
+        # lib=['bsd','rtemstest','rtemsbsp','rtemscpu', 'm','z'],
         source = [
             # './udp_echo_server/rtems_config.c','./udp_echo_server/udp_echo_server.c'
             # 'test_uart.c'
